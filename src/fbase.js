@@ -3,8 +3,14 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 
 //인증
-import { getAuth } from "firebase/auth";
+import { getAuth, 
+  createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, //회원가입
+  signInWithEmailAndPassword
 
+} from "firebase/auth";
+/**
+ * createUserWithEmailAndPassword -- 회원가입
+ */
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -25,4 +31,8 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const analytics = getAnalytics(app);
 
-export {auth}
+export {
+  auth, 
+  createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup,
+  signInWithEmailAndPassword
+}
