@@ -3,6 +3,7 @@ import { useState } from "react";
 const Auth = () =>{
     const [email, setEmail] = useState('');
     const [pw, setPw] = useState('');
+    const [newAccount, setNewAccount] = useState(true);
 
     const onChange = (event) => {
         const {target: {name, value}} = event;
@@ -15,14 +16,17 @@ const Auth = () =>{
 
     const onSubmit = (event) => {
         event.preventDefault();
-        console.log(email, pw)
+        if(newAccount){}else{}
     }
+    
+
     return (
         <div>
             <form onSubmit={onSubmit}>
+                {/* <p>{isIn?'로그인':'회워가입'}</p> */}
                 <input type="text" value={email} name="email" placeholder="Email" required onChange={onChange}/>
                 <input type="password" value={pw} name="password" placeholder="Password" required onChange={onChange}/>
-                <input type="submit" value="Log In"/>
+                <input type="submit" value={newAccount?'Create Account':'Login'}/>
             </form>
             <div>
                 <button type="button">Google</button>
