@@ -10,7 +10,7 @@ const Auth = () => {
   const [email, setEmail] = useState("");
   const [pw, setPw] = useState("");
   const [newAccount, setNewAccount] = useState(false);
-
+  const [error, setError] = useState("");
   const onChange = (event) => {
     const {
       target: { name, value },
@@ -23,30 +23,31 @@ const Auth = () => {
   };
 
   const googleLogin = () => {
-    if (newAccount) {
-      const provider = new GoogleAuthProvider();
-      signInWithPopup(auth, provider)
-        .then((result) => {
-          // This gives you a Google Access Token. You can use it to access the Google API.
-          const credential = GoogleAuthProvider.credentialFromResult(result);
-          const token = credential.accessToken;
-          // The signed-in user info.
-          const user = result.user;
-          // IdP data available using getAdditionalUserInfo(result)
-          console.log("[[result]]", result);
-        })
-        .catch((error) => {
-          console.log("error", error);
-          // Handle Errors here.
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          // The email of the user's account used.
-          const email = error.customData.email;
-          // The AuthCredential type that was used.
-          const credential = GoogleAuthProvider.credentialFromError(error);
-          // ...
-        });
-    }
+    const provider = new GoogleAuthProvider();
+    console.log("2");
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        console.log("3");
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        const token = credential.accessToken;
+        // The signed-in user info.
+        const user = result.user;
+        // IdP data available using getAdditionalUserInfo(result)
+        console.log("[[result]]", result);
+      })
+      .catch((error) => {
+        console.log("4");
+        console.log("error", error);
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // The email of the user's account used.
+        const email = error.customData.email;
+        // The AuthCredential type that was used.
+        const credential = GoogleAuthProvider.credentialFromError(error);
+        // ...
+      });
   };
 
   const onSubmit = (event) => {
@@ -60,6 +61,7 @@ const Auth = () => {
         })
         .catch((error) => {
           const { code, message } = error;
+          setError(error);
           console.log(
             "[error] ",
             error,
@@ -80,6 +82,7 @@ const Auth = () => {
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
+          setError(error.message);
         });
     }
   };
@@ -105,6 +108,7 @@ const Auth = () => {
           onChange={onChange}
         />
         <input type="submit" value={newAccount ? "Create Account" : "Login"} />
+        <p>{error}</p>
       </form>
       <div>
         <button type="button" onClick={googleLogin}>
