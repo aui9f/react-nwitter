@@ -4,6 +4,10 @@ import Router from './Router'
 
 import { createGlobalStyle } from "styled-components";
 import reset from 'styled-reset'
+import { useEffect, useState } from 'react';
+import Loding from './components/Loding';
+import {auth, onAuthStateChanged} from './fBase'
+
 const GlobalStyles = createGlobalStyle`
   ${reset};
   * {
@@ -18,9 +22,33 @@ const GlobalStyles = createGlobalStyle`
 `;
 
 function App() {
+  const [isLoading, setIsLogding] = useState(true);
+  const [isLogin, setIsLogin] = useState(false);
+  
+  const init = async() => {
+    //wati for firebase
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setIsLogding(false);
+        console.log('로그인 사용자: ', user)
+      } else {
+        setIsLogding(true);
+        console.log('User is signed out');
+      }
+      setIsLogding(false)
+    });
+  };
+
+  useEffect(()=>{
+    init();
+  },[])
   return<>
     <GlobalStyles/>
-    <RouterProvider router={Router} />
+    {isLoading?<Loding/>:
+      <RouterProvider router={Router} />
+    }
+    
+      
   </>
 
 }
