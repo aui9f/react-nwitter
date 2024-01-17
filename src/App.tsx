@@ -26,8 +26,8 @@ function App() {
   const [isLogin, setIsLogin] = useState(false);
   
   const init = async() => {
-    //wati for firebase
-    onAuthStateChanged(auth, (user) => {
+    
+    await onAuthStateChanged(auth, (user) => {
       if (user) {
         setIsLogding(false);
         console.log('로그인 사용자: ', user)
@@ -44,9 +44,8 @@ function App() {
   },[])
   return<>
     <GlobalStyles/>
-    {isLoading?<Loding/>:
-      <RouterProvider router={Router} />
-    }
+    
+    {isLoading?<Loding/>:<RouterProvider router={Router} />}
     
       
   </>

@@ -4,11 +4,12 @@ import Home from "./route/Home";
 import Profile from "./route/Profile";
 import Login from "./route/Login";
 import Account from "./route/Account";
+import ProtectedRoutes from "./ProtectedRoutes";
 
 const Router = createBrowserRouter([
     {
         path: '/',
-        element: <Layout/>,
+        element: <ProtectedRoutes><Layout/></ProtectedRoutes>,
         children: [
             {
                 path: '',
