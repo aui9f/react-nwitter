@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form"
 import { styled } from "styled-components";
 import { auth } from "../fBase";
 import { useNavigate } from "react-router-dom";
-
+import GoogleLogin from '../components/GoogleLogin'
 interface IForm {
     email: string
     pw: string
@@ -22,7 +22,6 @@ const Form = styled.form`
     width: 320px;
     display: flex;
     flex-direction: column;
-    padding: 12px;
 `
 const Input = styled.input`
     padding: 12px;
@@ -64,6 +63,8 @@ export default function Login(){
                 <Input {...register('pw', {required: true})}/>
                 <Button>LOGIN</Button>
             </Form>
+            <hr/>
+            <GoogleLogin/>
         </Wrapper>
     </>
 }

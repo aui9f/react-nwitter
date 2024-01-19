@@ -17,12 +17,13 @@ justify-content: center;
 flex-direction: column;
 text-align: center;
 `
-const Title = styled.div``
+const Title = styled.div`
+    margin-bottom: 24px;
+`
 const Form = styled.form`
     width: 320px;
     display: flex;
     flex-direction: column;
-    padding: 12px;
 `
 const Input = styled.input`
     padding: 12px;
@@ -34,11 +35,18 @@ const Button = styled.button`
     padding: 12px;
     border: 1px solid #aaaaaa;
     border-radius: 4px;
+    width: 320px;
+`
+
+const Hr = styled.hr`
+    border-top: 1px solid #eeeeee;
+    margin: 16px 0;
+    width: 320px;
 `
 
 export default function Account(){
     const navigate = useNavigate();
-    const {register, handleSubmit, formState: {errors}} = useForm<IForm>({});
+    const {register, handleSubmit, formState: {errors}, watch} = useForm<IForm>({});
     
     const onSubmit = (data:IForm) => {
         
@@ -59,12 +67,19 @@ export default function Account(){
                 // ..
             });
         } catch (error) {
-            
+            console.log(errors);
         } finally{
             navigate("/");
         }
         
     }
+
+    const onClick = () => {
+        navigate('/login')
+    }
+
+
+
     return <>
         <Wrapper>
             <Title>
@@ -77,16 +92,32 @@ export default function Account(){
                         required: '이메일은 필수값입니다.'})
                     } placeholder="Email"
                 />
-                <Input  {...register('pw', {required: true})} type="password" placeholder="Password"/>
-                <Input  {...register('pw2', {required: true})} type="password" placeholder="Check Password"/>
+                <p>{errors?.email?.message}</p>
+                <Input  {...register('pw', {
+                    required: '비밀번호는 필수값입니다.', 
+                    minLength: {
+                        value: 6, message: '6글자 이상'
+                    }
+                })} type="password" placeholder="Password"/>
+                <p>{errors?.pw?.message}</p>
+                <Input  {...register('pw2', {
+                        required: true, 
+                        validate: (inputData: string) => {
+                            if(watch('pw')!==inputData){
+                                return 'your Password do no match'
+                            }
+                        }
+                    })
+                } type="password" placeholder="Check Password"/>
+
+                <p>{errors?.pw2?.message}</p>
                 <Button>회원가입</Button>
-                <p></p>
+                
             </Form>
             
-            <hr />
+            <Hr />
 
-            <Button></Button>
-            <Button></Button>
+            <Button onClick={onClick}>LOGIN</Button>
             
             <p></p>
         </Wrapper>
