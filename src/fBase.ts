@@ -7,9 +7,12 @@ import {
   onAuthStateChanged, // 현재 로그인한 사용자 가져오기
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword, // 이메일 주소와 비밀번호로 사용자 로그인
-  signInWithPopup, GoogleAuthProvider, signOut
+  signInWithPopup, GoogleAuthProvider, signOut,
 
 } from "firebase/auth";
+
+import { getFirestore, collection, addDoc  } from "firebase/firestore";
+import { getStorage, uploadBytes, ref, uploadBytesResumable } from "firebase/storage";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -22,13 +25,20 @@ const firebaseConfig = {
   storageBucket: import.meta.env.VITE_APP_STORAGE_BUCKET,
   messagingSenderId: import.meta.env.VITE_APP_MESSAGING_SENDER_ID,
   appId: import.meta.env.VITE_APP_APP_ID,
-  measurementId: import.meta.env.VITE_APP_MEASUREMENT_ID 
+  measurementId: import.meta.env.VITE_APP_MEASUREMENT_ID,
+  
 };
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const db = getFirestore(app);
+const storage = getStorage(app, `${firebaseConfig.storageBucket}`);
+
 // const analytics = getAnalytics(app);
 export {app, auth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, 
   signInWithPopup, GoogleAuthProvider,
-  signOut
+  signOut,
+  db, collection, addDoc, 
+  storage, ref, uploadBytes, uploadBytesResumable
+  
 }

@@ -1,11 +1,24 @@
 import { Outlet } from "react-router-dom"
-import Header from "./components/Header"
-
+import NavigationBar from "./components/NavigationBar"
+import { styled } from "styled-components"
+const Wrapper=styled.div`
+    display: flex;
+    width: 100%;
+    >div{
+        &:last-child{
+            margin-left: 88px;
+            flex: 1;
+            height: 100vh;
+        }
+    }
+`
 function Layout(){
     return <>
-        <Header/>
-        <p>Layout</p>
-        <Outlet/>
+        <Wrapper>
+            
+            <NavigationBar/>
+            <Outlet/>
+        </Wrapper>
     </>
 }
 export default Layout
