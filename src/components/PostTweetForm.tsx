@@ -95,11 +95,12 @@ export default function PostTweetForm(){
     
     const onSubmit = async (data: Tweets) => {
         try {
+            console.log(data.image)
             //이미지
             // console.log(data.image)
             // return false;
             let imagePath = '';
-            if(data.image){
+            if(data.image && data.image.length>0){
                 const img = data?.image?.[0];
                 const storageRef = ref(storage, `images/${auth.currentUser?.uid}/${new Date().getTime()}-${img.name}`);
                 // 'file' comes from the Blob or File API
