@@ -18,6 +18,39 @@ const GlobalStyles = createGlobalStyle`
     font-family: 'system-ui', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   }
 
+.h1, h1 {
+  font-size: 2rem;
+}
+
+.h2, h2 {
+  font-size: 1.8rem;
+}
+
+.h3, h3 {
+  font-size: 1.6rem;
+}
+
+.h4, h4 {
+  font-size: 1.4rem;
+}
+
+.h5, h5 {
+  font-size: 1.2rem;
+}
+
+.h6, h6 {
+  font-size: 1rem;
+}
+
+hr {
+   display:block;
+   height:1px;
+   border:0;  
+   border-top:1px solid #cccccc;
+   margin:1em 0;
+   padding:0;
+}
+
 `;
 
 function App() {

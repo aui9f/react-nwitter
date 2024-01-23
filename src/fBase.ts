@@ -12,9 +12,9 @@ import {
 
 import { 
   getFirestore, getDocs, collection, addDoc, query, orderBy, limit ,  
-  doc, onSnapshot, deleteDoc, updateDoc
+  doc, onSnapshot, deleteDoc, updateDoc, 
 } from "firebase/firestore";
-import { getStorage, uploadBytes, ref, uploadBytesResumable, deleteObject} from "firebase/storage";
+import { getStorage, uploadBytes, ref, uploadBytesResumable, deleteObject, getDownloadURL} from "firebase/storage";
 
 import { getDatabase } from "firebase/database";
 
@@ -46,6 +46,6 @@ export {app, auth, onAuthStateChanged, createUserWithEmailAndPassword, signInWit
   signOut,
   db, collection, addDoc, getDocs, query, orderBy, limit, doc, onSnapshot,deleteDoc,
   storage, ref, uploadBytes, uploadBytesResumable,
-  database, deleteObject, updateDoc
+  database, deleteObject, updateDoc, getDownloadURL
 
 }

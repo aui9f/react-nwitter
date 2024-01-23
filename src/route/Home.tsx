@@ -7,14 +7,8 @@ const Reporting = styled.div`
 `
 function Home(){
     return <>
-
-    <Reporting>
-        <div></div>
-            <PostTweetForm/>
-            <Timeline/>
-        <div></div>
-    </Reporting>
-    
+        <PostTweetForm/>
+        <Timeline/>
     </>
 }
 export default Home;

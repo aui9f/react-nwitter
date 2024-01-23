@@ -20,23 +20,25 @@ export default function Timeline(){
 
     
     useEffect(()=>{
-        let unsubscribe: Unsubscribe | null = null;
-        console.log("unsubscribe", unsubscribe)
+        const unsubscribe: Unsubscribe | null = null;
+        
         const fetchTweets = async () => {
             const q = query(collection(db, "tweets"), orderBy("createdAt", "desc"), limit(10));
             
-            // const querySnapshot = await getDocs(q);
-            // const result = querySnapshot.docs.map(x=>{
-            //     const {userId, image, like, createdAt, text} = x.data();
-            //     return {userId, image, like, createdAt, text}
-            // })
-            unsubscribe = await onSnapshot(q, (doc) => {
-                const result = doc.docs.map((x)=>{
-                    const {userId, image, like, createdAt, text} = x.data();
-                    return {userId, image, like, createdAt, text, id: x.id}
-                })
-                setTweet(result);
-            });
+            const querySnapshot = await getDocs(q);
+            const result = querySnapshot.docs.map(x=>{
+                const {userId, image, like, createdAt, text} = x.data();
+                return {userId, image, like, createdAt, text}
+            })
+            setTweet(result);
+            //실시간
+            // unsubscribe = await onSnapshot(q, (doc) => {
+            //     const result = doc.docs.map((x)=>{
+            //         const {userId, image, like, createdAt, text} = x.data();
+            //         return {userId, image, like, createdAt, text, id: x.id}
+            //     })
+            //     setTweet(result);
+            // });
             
         }
         fetchTweets()
