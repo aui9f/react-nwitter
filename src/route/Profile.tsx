@@ -72,9 +72,9 @@ const TweetList = styled.ul`
 
 
 interface ITweet{
-    id?: string;
+    id: string;
     userId: string;
-    image?: string[];
+    image: string[];
     like: number;
     createdAt: number;
     text: string;
@@ -117,7 +117,7 @@ export default function Profile(){
     }
     const getUserImg = async () => {
         const user = auth.currentUser;
-        const locationRef = `profile/${user.uid}`
+        const locationRef = `profile/${user?.uid}`
         getDownloadURL(ref(storage,locationRef))
             .then((url) => {
                 setAvatar(url)

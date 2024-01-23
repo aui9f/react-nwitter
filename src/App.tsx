@@ -55,7 +55,7 @@ hr {
 
 function App() {
   const [isLoading, setIsLogding] = useState(true);
-  const [isLogin, setIsLogin] = useState(false);
+  // const [isLogin, setIsLogin] = useState(false);
   
   const init = async() => {
     

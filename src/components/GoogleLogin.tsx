@@ -29,8 +29,7 @@ export default function GooogleLogin() {
         signInWithPopup(auth, provider)
             .then((result) => {
                 const credential = GoogleAuthProvider.credentialFromResult(result);
-                
-                const token = credential.accessToken;
+                credential?.accessToken;
                 navigate('/')
                 
             //     // This gives you a Google Access Token. You can use it to access the Google API.
@@ -48,6 +47,7 @@ export default function GooogleLogin() {
                 const email = error.customData.email;
                 // The AuthCredential type that was used.
                 const credential = GoogleAuthProvider.credentialFromError(error);
+                console.log(`${errorCode} / ${errorMessage} / ${email} / ${credential} `);
                 // ...
             });
     }

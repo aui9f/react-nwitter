@@ -1,14 +1,11 @@
-import { 
-    db, doc, deleteDoc,collection,  query, 
-    storage, ref, deleteObject, updateDoc
-} from "../fBase";
+import { db, doc, deleteDoc, storage, ref, deleteObject, } from "../fBase";
 
 import { styled } from "styled-components";
 
 interface ITweet{
-    id?: string;
+    id: string;
     userId: string;
-    image?: string[];
+    image: string[];
     like: number;
     createdAt: number;
     text: string;
@@ -32,32 +29,32 @@ border-radius: 8px;
 margin-left: 8px;
 `;
 
-export default function Tweet({id, text, userId, image, like, createdAt}: ITweet){
-    const onDelete = async (userId:string) => {
+export default function Tweet({id, text, userId, image, createdAt}: ITweet){
+    const onDelete = async ()  => {
 
         
         if(confirm('삭제하시겠습니까?')){
-            const imgPath = image[0];
+            const imgPath = image[0] || '';
             await deleteDoc(doc(db, "tweets", id ));
             if(imgPath){
-                
-                // Create a reference to the file to delete
-                const desertRef = ref(storage, imgPath);
+                    // Create a reference to the file to delete
+                    const desertRef = ref(storage, imgPath);
+                    // Delete the file
+                    await deleteObject(desertRef).then(() => {
+                    // File deleted successfully
+                    console.log('삭제', desertRef)
+                    }).catch((error) => {
+                    // Uh-oh, an error occurred!
+                    console.log('유지: ', error)
+                    });
 
-                // Delete the file
-                await deleteObject(desertRef).then(() => {
-                // File deleted successfully
-                console.log('삭제', desertRef)
-                }).catch((error) => {
-                // Uh-oh, an error occurred!
-                console.log('유지: ', error)
-                });
-
-            }
+                }
+            
         }
         
         
     }
+
     const onUpdate = async () => {
         //Todo 수정모달
         // const washingtonRef = doc(db, "tweets", id);
@@ -66,6 +63,7 @@ export default function Tweet({id, text, userId, image, like, createdAt}: ITweet
         //     text: '숫자만 잇었음'
         // });
     }
+
     return <TweetBox >
         <div className="header">
             <p className="nickname">{userId}</p>
@@ -74,11 +72,11 @@ export default function Tweet({id, text, userId, image, like, createdAt}: ITweet
         <div className="body">
             <p>{text}</p>
             <ImgList>
-            {image[0]}
+                {image[0] ? <img src={image[0]} /> : null}
             </ImgList>
         </div>
         <div className="footer">
-            <Button onClick={()=>{onDelete(userId)}}>Delete</Button>
+            <Button onClick={onDelete}>Delete</Button>
             <Button onClick={onUpdate}>Update</Button>
         </div>
     </TweetBox>

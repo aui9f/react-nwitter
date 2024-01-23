@@ -28,3 +28,16 @@ export default {
 - Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
 - Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
 - Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+
+
+npm install -g firebase-tools
+firebase login
+firebase init
+    > Hosting: Configure files for Firebase Hosting and (optionally) set up GitHub Action deploys
+    ? Please select an option: (Use arrow keys)
+        ❯ Use an existing project 
+    ? Select a default Firebase project for this directory: 
+        ❯ nwitter-18e54 (nwitter) 
+    ? What do you want to use as your public directory? dist
+    ? Configure as a single-page app (rewrite all urls to /index.html)? Yes
+    ? Set up automatic builds and deploys with GitHub? No

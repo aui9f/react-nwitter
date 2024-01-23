@@ -44,7 +44,7 @@ export default function NavigationBar () {
             signOut(auth).then(() => {
                 navigate('/login');
             }).catch((error) => {
-                console.log('An error happened.')
+                console.log('An error happened.', error)
             });
         }
         

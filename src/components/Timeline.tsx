@@ -1,15 +1,14 @@
 import { 
-    db, getDocs, collection, query, orderBy, limit,
-    database, doc, onSnapshot, Unsubscribe, deleteDocㄴ
-  } from "../fBase";
+    db, getDocs, collection, query, orderBy, limit} from "../fBase";
 import { useEffect, useState } from "react";
 import Tweet from "./Tweet";
 
+// import { Unsubscribe } from "firebase/auth";
 
 interface ITweet{
-    id?: string;
+    id: string;
     userId: string;
-    image?: string[];
+    image: string[];
     like: number;
     createdAt: number;
     text: string;
@@ -20,7 +19,7 @@ export default function Timeline(){
 
     
     useEffect(()=>{
-        const unsubscribe: Unsubscribe | null = null;
+        // const unsubscribe: Unsubscribe | null = null;
         
         const fetchTweets = async () => {
             const q = query(collection(db, "tweets"), orderBy("createdAt", "desc"), limit(10));
@@ -28,7 +27,8 @@ export default function Timeline(){
             const querySnapshot = await getDocs(q);
             const result = querySnapshot.docs.map(x=>{
                 const {userId, image, like, createdAt, text} = x.data();
-                return {userId, image, like, createdAt, text}
+                console.log(image)
+                return {userId, image, like, createdAt, text, id: String(x.id)}
             })
             setTweet(result);
             //실시간
@@ -43,14 +43,14 @@ export default function Timeline(){
         }
         fetchTweets()
         return () => {
-            unsubscribe && unsubscribe();
+            // unsubscribe && unsubscribe();
         };
     },[])
     return <>
         <hr/> 
         <ul>
             {/* {tweets.map((tweet: ITweet) => (<li  key={tweet.createdAt}>{tweet.text}</li>))} */}
-            {tweets.map((tweet)=><Tweet key={tweet.createdAt} {...tweet}/>)}
+            {tweets.map((tweet)=><Tweet key={tweet.id} {...tweet}/>)}
         </ul>
         
     </>

@@ -1,8 +1,9 @@
 
 import { useForm } from "react-hook-form";
 import { styled } from "styled-components";
-import { auth, db, collection, addDoc, storage, ref, uploadBytes, uploadBytesResumable } from "../fBase";
-import { useEffect } from "react";
+import { auth, db, collection, addDoc, storage, ref,  } from "../fBase";
+import { useState } from "react";
+
 const Wrapper = styled.div`
     padding: 16px;
 `
@@ -63,64 +64,61 @@ const SubmitBtn = styled.input`
 
 interface Tweets{
     text: string
-    image?: []
+    image: []
 }
 
 export default function PostTweetForm(){
-    const {register, handleSubmit, reset, watch, resetField} = useForm<Tweets>();
-    
-    const updateImages = watch('image');
-    useEffect(()=>{
-        /**
-            1024 = 1KB
-            1024 * 1024 = 1MB
-            1024 * 1024 * 1024 = 1GB
-            1024 * 1024 * 1024 * 1024 = 1TB
-         */
-        if (updateImages && updateImages.length > 0) {
-            const {size} = updateImages[0];
-            if(size>(1024 * 1024 * 1024)){
-                alert('사이즈조절필요(1GB)');
-                resetField("image")
-            }
-        }else{
-            console.log("???")
-        }
+    const {register, handleSubmit, reset, } = useForm<Tweets>();
+    const [files, setFile] = useState<File[] | []>([]);
+
+    // watch, resetField
+
+    // const updateImages = watch('image');
+    // useEffect(()=>{
+    //     /**
+    //         1024 = 1KB
+    //         1024 * 1024 = 1MB
+    //         1024 * 1024 * 1024 = 1GB
+    //         1024 * 1024 * 1024 * 1024 = 1TB
+    //      */
+    //     if (updateImages && updateImages.length>0) {
+    //         const {size} = updateImages[0];
+    //         if(size>(1024 * 1024 * 1024)){
+    //             alert('사이즈조절필요(1GB)');
+    //             resetField("image")
+    //         }
+    //     }else{
+    //         console.log("???")
+    //     }
         
-        // if(updateImages[0].size>(1024 * 1024 * 1024)){
-        //     alert('사이즈조절필요(1GB)');
-        // }
+    //     // if(updateImages[0].size>(1024 * 1024 * 1024)){
+    //     //     alert('사이즈조절필요(1GB)');
+    //     // }
 
-    }, [updateImages])
+    // }, [updateImages])
     
-    const onSubmit = async (data: Tweets) => {
+    const onSubmit = async ({text}: Tweets) => {
         try {
-            console.log(data.image)
-            //이미지
-            // console.log(data.image)
-            // return false;
-            let imagePath = '';
-            if(data.image && data.image.length>0){
-                const img = data?.image?.[0];
-                const storageRef = ref(storage, `images/${auth.currentUser?.uid}/${new Date().getTime()}-${img.name}`);
-                // 'file' comes from the Blob or File API
-                const snapshot = await uploadBytes(storageRef, data.image);
-                imagePath = snapshot.ref.fullPath;
+          
+          
+          /**
+           * 2024.11.23 사진 한장만 업로드
+           */
+            let fullPath = '';
+            if(files && files[0]){
+              const mountainImagesRef = await ref(storage, `images/${auth.currentUser?.uid}/${new Date().getTime()}-${files[0].name}`);
+              fullPath = mountainImagesRef.fullPath
+              
             }
-            // Create a reference to 'mountains.jpg'
-            // const mountainsRef = ref(storage, 'mountains.jpg');
-
-            // // Create a reference to 'images/mountains.jpg'
-            // const mountainImagesRef = ref(storage, 'images/mountains.jpg');
-
-            //저장
+             //저장
             const docRef = await addDoc(collection(db, "tweets"), {
-                text: data.text,
+                text: text,
                 createdAt: new Date().getTime(),
                 userId: auth.currentUser?.uid,
-                image: [imagePath],
+                image: [fullPath],
                 like: 0
             });
+
             console.log("Document written with ID: ", docRef.id);
             reset();
         } catch (e) {
@@ -130,14 +128,35 @@ export default function PostTweetForm(){
         
         
     }
-
+    const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const {files} = e.target;
+      
+       if (files && files.length) {
+        setFile(existing => [...existing, ...files]); // *** Only change is here
+    }
+      
+      // if(files && files.length>0){
+      //   // setFile(fiels.map(x=>x))
+        
+      //   for (const key in files) {
+      //     if(files[key].size){
+      //       console.log("files[key]", files[key])
+      //       setFile(files[key])
+      //     }
+      //   }
+      // }
+    }
     return <Wrapper>
             <Form onSubmit={handleSubmit(onSubmit)}>
                 <TextArea {...register('text', {required: '필수입력사항입니다.',maxLength: 160})}/>
                 <AttachFileButton htmlFor="file">Add Photo</AttachFileButton>
-                <AttachFileInput {...register('image')} type="file" id="file" accept="image/*"/>
+
+                <AttachFileInput {...register('image')} type="file" id="file" accept="image/*" onChange={onFileChange} multiple/>
+                {/*  */}
 
                 <SubmitBtn type="submit" />
+                <hr />
+                
             </Form>
     </Wrapper>
     

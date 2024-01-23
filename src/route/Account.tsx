@@ -53,10 +53,9 @@ export default function Account(){
         const {email, pw} = data;
         try {
             createUserWithEmailAndPassword(auth, email, pw)
-            .then((userCredential) => {
+            .then(() => {
                 // Signed in 
-                const user = userCredential.user;
-                console.log('User: ', user);
+                // const user = userCredential.user;
                 navigate("/");
                 // ...
             })
