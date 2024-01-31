@@ -3,7 +3,7 @@ import { initializeApp } from "firebase/app";
 // import { getAnalytics } from "firebase/analytics";
 //인증
 import {
-  getAuth,
+  getAuth, 
   onAuthStateChanged, // 현재 로그인한 사용자 가져오기
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword, // 이메일 주소와 비밀번호로 사용자 로그인
