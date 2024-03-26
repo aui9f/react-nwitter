@@ -2,6 +2,10 @@ import { useForm } from "react-hook-form"
 import { styled } from "styled-components"
 import {auth, createUserWithEmailAndPassword} from '../fBase'
 import { useNavigate } from "react-router-dom"
+import Divider from "../components/StyleUi/Divider"
+import { CollectionInsert } from "../api/firestore"
+import { FirebaseError } from "firebase/app"
+
 interface IForm {
     email: string
     pw: string
@@ -16,9 +20,11 @@ align-items: center;
 justify-content: center;
 flex-direction: column;
 text-align: center;
+background-color: #a1cfe2;
 `
 const Title = styled.div`
     margin-bottom: 24px;
+    width: 320px;
 `
 const Form = styled.form`
     width: 320px;
@@ -36,6 +42,8 @@ const Button = styled.button`
     border: 1px solid #aaaaaa;
     border-radius: 4px;
     width: 320px;
+    background-color: #4d9ee8;
+    color: #FFFFFF;
 `
 
 const Hr = styled.hr`
@@ -44,29 +52,37 @@ const Hr = styled.hr`
     width: 320px;
 `
 
+interface IError {
+   code: number
+   message: string
+    
+}
 export default function Account(){
     const navigate = useNavigate();
     const {register, handleSubmit, formState: {errors}, watch} = useForm<IForm>({});
     
-    const onSubmit = (data:IForm) => {
+    const onSubmit = async (data:IForm) => {
         
         const {email, pw} = data;
         try {
-            createUserWithEmailAndPassword(auth, email, pw)
-            .then(() => {
-                // Signed in 
-                // const user = userCredential.user;
-                navigate("/");
-                // ...
-            })
-            .catch((error) => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                console.log('error: ', errorCode, errorMessage);
-                // ..
+            const userCredential = await createUserWithEmailAndPassword(auth, email, pw);
+            const uid = userCredential.user.uid;
+            CollectionInsert('user', {
+                uid, email,
+                createdAt: new Date().getTime(),
+                updatedAt: new Date().getTime(),
+                nickname: email.split('@')[0],
+                photo: '',
+                self: ''
             });
         } catch (error) {
-            console.log(errors);
+            const err = error instanceof FirebaseError
+            if(err){
+                console.log(error.code, error.message);
+              }
+            
+            // const errorMessage = err.message;
+            // console.log('error: ', errorCode, errorMessage);
         } finally{
             navigate("/");
         }
@@ -83,7 +99,7 @@ export default function Account(){
         <Wrapper>
             <Title>
                 <h2>Title</h2>
-                <p>Lorem Ipsum is simply dummy text of the printing and typesetting</p>
+                <Divider label={'ACCOUNT'}/>
             </Title>
 
             <Form onSubmit={handleSubmit(onSubmit)}>
@@ -114,9 +130,8 @@ export default function Account(){
                 
             </Form>
             
-            <Hr />
 
-            <Button onClick={onClick}>LOGIN</Button>
+            {/* <Button onClick={onClick}>LOGIN</Button> */}
             
             <p></p>
         </Wrapper>
