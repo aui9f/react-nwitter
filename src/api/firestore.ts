@@ -1,8 +1,9 @@
 
 
-import { auth, db, collection, addDoc, storage, ref,  } from "../fBase";
+import { auth, db, collection, addDoc, getDocs, ref,  } from "../fBase";
 
 export async function  CollectionInsert(table: string, payload: Record<string, unknown>){
-  const docRef = await addDoc(collection(db, table), payload);
+  
+  return await addDoc(collection(db, table), payload);
 
 }

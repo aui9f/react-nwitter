@@ -76,6 +76,7 @@ export default function Account(){
                 self: ''
             });
         } catch (error) {
+            
             const err = error instanceof FirebaseError
             if(err){
                 console.log(error.code, error.message);
