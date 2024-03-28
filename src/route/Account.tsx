@@ -67,6 +67,7 @@ export default function Account(){
         try {
             const userCredential = await createUserWithEmailAndPassword(auth, email, pw);
             const uid = userCredential.user.uid;
+            console.log("userCredential", userCredential)
             CollectionInsert('user', {
                 uid, email,
                 createdAt: new Date().getTime(),

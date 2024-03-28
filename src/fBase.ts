@@ -12,7 +12,7 @@ import {
 
 import { 
   getFirestore, getDocs, collection, addDoc, query, orderBy, limit ,  
-  doc, onSnapshot, deleteDoc, updateDoc, 
+  doc, onSnapshot, deleteDoc, updateDoc, where 
 } from "firebase/firestore";
 import { getStorage, uploadBytes, ref, uploadBytesResumable, deleteObject, getDownloadURL} from "firebase/storage";
 
@@ -44,7 +44,7 @@ const database = getDatabase(app);
 export {app, auth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, 
   signInWithPopup, GoogleAuthProvider,
   signOut,
-  db, collection, addDoc, getDocs, query, orderBy, limit, doc, onSnapshot,deleteDoc,
+  db, collection, addDoc, getDocs, query, orderBy, limit, doc, onSnapshot,deleteDoc, where,
   storage, ref, uploadBytes, uploadBytesResumable,
   database, deleteObject, updateDoc, getDownloadURL
 

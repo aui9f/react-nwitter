@@ -1,7 +1,7 @@
 
 import { useForm } from "react-hook-form";
 import { styled } from "styled-components";
-import { auth, db, collection, addDoc, storage, ref,  } from "../fBase";
+import { auth, db, collection, addDoc, storage, ref, query,  where, getDocs} from "../fBase";
 import { useState } from "react";
 
 const Wrapper = styled.div`
@@ -98,6 +98,22 @@ export default function PostTweetForm(){
     // }, [updateImages])
     
     const onSubmit = async ({text}: Tweets) => {
+      
+console.log('id: ', auth.currentUser,auth.currentUser?.uid)
+      // Create a query against the collection.
+      const citiesRef = collection(db, "user");
+      const q = query(citiesRef, where("uid", "==", '3vMjVxz9ryfl1HwZYQE3wxFaqkj2'));
+      
+//       쿼리 실행
+// 쿼리 객체를 만든 후 get() 함수를 사용하여 결과를 검색합니다.
+
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        // doc.data() is never undefined for query doc snapshots
+        console.log(doc.id, " => ", doc.data());
+      });
+
+      return false;
         try {
           
           
@@ -135,16 +151,6 @@ export default function PostTweetForm(){
         setFile(existing => [...existing, ...files]); // *** Only change is here
     }
       
-      // if(files && files.length>0){
-      //   // setFile(fiels.map(x=>x))
-        
-      //   for (const key in files) {
-      //     if(files[key].size){
-      //       console.log("files[key]", files[key])
-      //       setFile(files[key])
-      //     }
-      //   }
-      // }
     }
     return <Wrapper>
             <Form onSubmit={handleSubmit(onSubmit)}>
